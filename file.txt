@@ -1,0 +1,5 @@
+{
+  "message": "Доступ запрещён. Возможно, у приложения недостаточно прав для данного действия.",
+  "description": "Forbidden",
+  "error": "ForbiddenError"
+}
