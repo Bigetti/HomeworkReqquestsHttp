@@ -5,6 +5,7 @@ import json
 
 token = open("token").read()
 
+dict_responce ={}
 
 class YaUploader:
     def __init__(self, token: str):
@@ -33,25 +34,32 @@ class YaUploader:
             data=data
         )
 
-        if response.status_code -- 201:
+        if response.status_code == 201:
             print("File was successfully aploaded to YandexDisk")
+            # Извлекаем ссылку на загруженный файл
+            upload_info = response.json()
+            file_link = upload_info.get("href")
+            if file_link:
+                print("Ссылка на загруженный файл:", file_link)
+            else:
+                print("Не удалось получить ссылку на загруженный файл")
         else:
             print("Mistake happend")
 
-        dict = response.json()
+        dict_responce = response.json()
 
 
         #Хочу выгрузить данные в файл  и посмотреть что там, но получаю какую-то ошибку внутри файла, сама выгрузка идет
         with open("file.txt", 'w') as f:
-            json.dump(dict, f, ensure_ascii=False, indent=2)
+            json.dump(dict_responce, f, ensure_ascii=False, indent=2)
         
-        print(type(dict))
+        print(type(dict_responce))
         #убеждаюсь, что это словарь
 
-        for key, value in dict.items() :
-            print (key, value)
-
-        return dict
+        return dict_responce
+    
+    def __str__(self):
+        return json.dumps(self.dict_responce, indent=4)
         
 
    
@@ -65,6 +73,6 @@ if __name__ == '__main__':
     uploader = YaUploader(token)
     result = uploader.upload(path_to_file)
     
-    #Вроде все отрабатывает, File was successfully aploaded to YandexDisk, но мой файл не появился у меня в облаке и я не понимаю где его нужно искать
-    # print(dict)
+    
+    print(result)
     
